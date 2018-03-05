@@ -1,0 +1,10 @@
+services:
+- mssql
+
+init:
+- appveyor version
+
+test_script:
+- sh: sqlcmd -S localhost -U SA -P Password12! -Q 'select @@VERSION'
+
+build: off
