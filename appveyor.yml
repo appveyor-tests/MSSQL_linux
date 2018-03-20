@@ -6,6 +6,7 @@ init:
 - env
 
 test_script:
+- sh: sleep 5
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 build: off
