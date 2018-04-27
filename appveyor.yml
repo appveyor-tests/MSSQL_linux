@@ -4,6 +4,7 @@ services:
 init:
 - appveyor version
 - env
+- cat /etc/hosts
 
 test_script:
 - sh: sleep 5
