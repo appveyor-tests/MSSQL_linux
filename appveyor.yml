@@ -5,7 +5,7 @@ init:
 - appveyor version
 - env
 - cat /proc/meminfo
-- sh: sed  -i -e '/192.168.0.9/d' /etc/hosts
+- sh: sudo sed  -i -e '/192.168.0.9/d' /etc/hosts
 - cat /etc/hosts
 
 
