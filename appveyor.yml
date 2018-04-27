@@ -4,6 +4,7 @@ services:
 init:
 - appveyor version
 - env
+- grep MemTotal /proc/meminfo
 - cat /etc/hosts
 
 test_script:
