@@ -6,6 +6,7 @@ init:
 - env
 - cat /proc/meminfo
 - cat /etc/hosts
+- sh: systemctl status mssql-server.service
 
 test_script:
 - sh: sleep 5
