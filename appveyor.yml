@@ -17,8 +17,8 @@ test_script:
 - sh: sleep 5
 - sh: systemctl status mssql-server.service || true
 - sh: grep "$(date '+%b %d')" /var/log/syslog > syslog.today
-- sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
+- sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 
 build: off
