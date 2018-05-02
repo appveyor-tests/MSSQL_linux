@@ -18,8 +18,8 @@ test_script:
 - sh: systemctl status mssql-server.service || true
 - sh: grep "$(date '+%b %d')" /var/log/syslog > syslog.today
 - sh: read -r IP_NUM IP_DEV IP_FAM IP_ADDR IP_REST <<< "$(ip -o -4 addr show up primary scope global)"
-- sh: echo $IP_ADDR
-- sh: sudo echo "$IP_ADDR  thin" >> /etc/hosts
+- sh: echo ${IP_ADDR%/*}
+- sh: sudo bash -c "echo ${IP_ADDR%/*}  $(hostname) >> /etc/hosts"
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 
