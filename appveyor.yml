@@ -20,6 +20,7 @@ test_script:
 - sh: read -r IP_NUM IP_DEV IP_FAM IP_ADDR IP_REST <<< "$(ip -o -4 addr show up primary scope global)"
 - sh: echo ${IP_ADDR%/*}
 - sh: sudo bash -c "echo ${IP_ADDR%/*}  $HOSTNAME >> /etc/hosts"
+- sh: cat /etc/hosts
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 
