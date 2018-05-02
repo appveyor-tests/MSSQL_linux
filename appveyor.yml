@@ -12,7 +12,11 @@ init:
 test_script:
 - sh: sleep 5
 - sh: systemctl status mssql-server.service || true
-- sh: cat /var/log/syslog | grep "$(date '+%b %d')"
+- sh: grep "$(date '+%b %d')" /var/log/syslog > syslog.today
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 build: off
+
+artifacts:
+  - path: syslog.today
+    name: syslog
