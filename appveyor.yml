@@ -22,7 +22,7 @@ test_script:
 - sh: sudo bash -c "echo 127.0.1.1  $HOSTNAME >> /etc/hosts"
 - sh: cat /etc/hosts
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
-- sh: journalctl -u appveyor-build-agent.service
+- sh: journalctl --no-pager -u appveyor-build-agent.service
 
 
 build: off
