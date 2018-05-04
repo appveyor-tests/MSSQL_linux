@@ -7,6 +7,8 @@ services:
 
 init:
 - appveyor version
+- sh: echo $APPVEYOR_BUILD_WORKER_IMAGE
+- sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
 - env
 - cat /proc/meminfo
 - sh: sudo sed  -i -e '/192.168.0.9/d' /etc/hosts
