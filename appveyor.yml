@@ -16,7 +16,8 @@ init:
 
 
 test_script:
-- sh: sleep 5
+- sh: stress --vm-bytes $(awk '/MemAvailable/{printf "%d\n", $2 * 0.9;}' < /proc/meminfo)k --vm-keep -m 1
+- sh: sleep 50
 - sh: systemctl status mssql-server.service || true
 - sh: grep "$(date '+%b %d')" /var/log/syslog > syslog.log
 - sh: ls -l syslog.log
