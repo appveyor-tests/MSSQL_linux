@@ -10,15 +10,15 @@ init:
 - sh: echo $APPVEYOR_BUILD_WORKER_IMAGE
 - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
 - env
+- sh: sudo apt install stress
+- sh: stress --vm-bytes $(awk '/MemAvailable/{printf "%d\n", $2 * 0.9;}' < /proc/meminfo)k --timeout 10s
 - cat /proc/meminfo
 - sh: sudo sed  -i -e '/192.168.0.9/d' /etc/hosts
 - cat /etc/hosts
 
 
 test_script:
-- sh: sudo apt install stress
-- sh: stress --vm-bytes $(awk '/MemAvailable/{printf "%d\n", $2 * 0.9;}' < /proc/meminfo)k --vm-keep -m 1
-- sh: sleep 50
+- sh: sleep 5
 - sh: systemctl status mssql-server.service || true
 - sh: grep "$(date '+%b %d')" /var/log/syslog > syslog.log
 - sh: ls -l syslog.log
