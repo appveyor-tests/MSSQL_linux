@@ -15,7 +15,7 @@ init:
     function getmem() { 
       awk '/MemTotal/{printf "%d", $2 / 1024;}' < /proc/meminfo; 
     }
-    function stress() {
+    function stressmem() {
       local MEGS=$1
       echo stress $MEGS megabytes
       stress --vm-bytes ${MEGS}M --timeout 5s -m 1
@@ -24,7 +24,7 @@ init:
     MEM_TOTAL_0=$( getmem )
     while [ $(getmem) -le 2000 ]; do
       MEGS=$(awk '/MemAvailable/{printf "%d\n", $2 * 0.9 / 1024;}' < /proc/meminfo)
-      stress $MEGS
+      stressmem $MEGS
       if [ $MEM_TOTAL_0 == $(getmem) ]; then
         echo "Memory do not increases"
         return 1
