@@ -13,7 +13,7 @@ init:
 #- sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 - sh: |
     function getmem() { 
-      awk '/MemTotal/{printf "%d" $2 / 1024;}' < /proc/meminfo; 
+      awk '/MemTotal/{printf "%d", $2 / 1024;}' < /proc/meminfo; 
     }
     function stress() {
       local MEGS=$1
