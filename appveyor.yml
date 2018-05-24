@@ -14,7 +14,7 @@ init:
     grep Mem /proc/meminfo
     KILOS=$(awk '/MemTotal/{printf "%d\n", $2 * 0.8;}' < /proc/meminfo)
     echo $KILOS
-    stress --vm-bytes ${KILOS}k --timeout 10s -m 5 
+    stress --vm-bytes ${KILOS}k --timeout 10s -m 1
     grep Mem /proc/meminfo
 - sh: sleep 8
 - free
