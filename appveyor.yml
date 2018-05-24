@@ -14,7 +14,7 @@ init:
 - sh: stress --vm-bytes 1500M --timeout 10s -m 1 &
 - sh: sleep 8
 #- cat /proc/meminfo
-- top
+- free
 - sh: sudo sed  -i -e '/192.168.0.9/d' /etc/hosts
 - cat /etc/hosts
 
