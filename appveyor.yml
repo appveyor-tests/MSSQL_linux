@@ -11,7 +11,8 @@ init:
 - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
 - env
 - sh: sudo apt install stress
-- sh: stress --vm-bytes 1500M --timeout 10s -m 1
+- sh: stress --vm-bytes 1500M --timeout 10s -m 1 &
+- sh: sleep 8
 - cat /proc/meminfo
 - sh: sudo sed  -i -e '/192.168.0.9/d' /etc/hosts
 - cat /etc/hosts
