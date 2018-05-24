@@ -10,6 +10,7 @@ init:
 - sh: echo $APPVEYOR_BUILD_WORKER_IMAGE
 - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
 - sh: sudo apt install stress
+- sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 - sh: |
     grep Mem /proc/meminfo
     KILOS=$(awk '/MemTotal/{printf "%d\n", $2 * 0.8;}' < /proc/meminfo)
