@@ -11,9 +11,11 @@ init:
 - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
 - sh: sudo apt install stress
 - sh: |
-    KILOS=$(awk '/MemTotal/{printf "%d\n", $2 * 0.9;}' < /proc/meminfo)
+    grep Mem /proc/meminfo
+    KILOS=$(awk '/MemTotal/{printf "%d\n", $2 * 0.8;}' < /proc/meminfo)
     echo $KILOS
-    stress --vm-bytes ${KILOS}k --timeout 10s -m 5 &
+    stress --vm-bytes ${KILOS}k --timeout 10s -m 5 
+    grep Mem /proc/meminfo
 - sh: sleep 8
 - free
 
