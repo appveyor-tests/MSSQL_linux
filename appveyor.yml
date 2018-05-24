@@ -24,7 +24,7 @@ init:
     grep Mem /proc/meminfo
     MEM_TOTAL_0=$( getmem )
     while [ $(getmem) -le 2000 ]; do
-      MEGS=$(awk '/MemAvailable/{printf "%d\n", $2 * 0.9 / 1024;}' < /proc/meminfo)
+      MEGS=$(awk '/MemAvailable/{printf "%d\n", $2 * 1.1 / 1024;}' < /proc/meminfo)
       stressmem $MEGS
       if [ $MEM_TOTAL_0 == $(getmem) ]; then
         echo "Memory do not increases"
