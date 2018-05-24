@@ -9,29 +9,17 @@ init:
 - appveyor version
 - sh: echo $APPVEYOR_BUILD_WORKER_IMAGE
 - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
-- env
-- uname -r
 - sh: sudo apt install stress
 - sh: stress --vm-bytes 1500M --timeout 10s -m 1 &
 - sh: sleep 8
-#- cat /proc/meminfo
 - free
-- sh: sudo sed  -i -e '/192.168.0.9/d' /etc/hosts
+№- sh: sudo sed  -i -e '/192.168.0.9/d' /etc/hosts
 - cat /etc/hosts
 
-
 test_script:
-- sh: sleep 5
 - sh: systemctl status mssql-server.service || true
 - sh: grep "$(date '+%b %d')" /var/log/syslog > syslog.log
-- sh: ls -l syslog.log
-#- sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
-- sh: read -r IP_NUM IP_DEV IP_FAM IP_ADDR IP_REST <<< "$(ip -o -4 addr show up primary scope global)"
-- sh: echo ${IP_ADDR%/*}
-- sh: sudo bash -c "echo 127.0.1.1  $HOSTNAME >> /etc/hosts"
-- sh: cat /etc/hosts
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
-#- sh: journalctl --no-pager -u appveyor-build-agent.service
 
 
 build: off
