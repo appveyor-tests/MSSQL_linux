@@ -10,7 +10,10 @@ init:
 - sh: echo $APPVEYOR_BUILD_WORKER_IMAGE
 - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
 - sh: sudo apt install stress
-- sh: stress --vm-bytes 2000M --timeout 10s -m 1 &
+- sh: |
+    KILOS=$(awk '/MemAvailable/{printf "%d\n", $2 * 0.9;}' < /proc/meminfo)
+    echo $KILOS
+    stress --vm-bytes ${KILOS}k --timeout 10s -m 1 &
 - sh: sleep 8
 - free
 
