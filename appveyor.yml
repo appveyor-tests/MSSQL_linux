@@ -20,13 +20,14 @@ init:
       echo stress $MEGS megabytes
       stress --vm-bytes ${MEGS}M --timeout 5s -m 1
     }
-    grep Mem /proc/meminfo
+
     MEM_TOTAL_0=$( getmem )
-    local counter=1
-    while [ $(getmem) -le 2000 ] && [ $counter -le 5 ]; do
+    local stress_counter=1
+    while [ $(getmem) -le 2000 ] && [ $stress_counter -le 5 ]; do
+      grep Mem /proc/meminfo
       MEGS=$(awk '/MemAvailable/{printf "%d\n", $2 * 1.1 / 1024;}' < /proc/meminfo)
       stressmem $MEGS
-      ((counter++))
+      ((stress_counter++))
     done
 
 - sh: sleep 8
