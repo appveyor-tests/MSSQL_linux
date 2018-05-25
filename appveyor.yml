@@ -20,16 +20,13 @@ init:
       echo stress $MEGS megabytes
       stress --vm-bytes ${MEGS}M --timeout 5s -m 1
     }
-    sleep 10
     grep Mem /proc/meminfo
     MEM_TOTAL_0=$( getmem )
-    while [ $(getmem) -le 2000 ]; do
+    local counter=1
+    while [ $(getmem) -le 2000 ] && [ $counter -le 5 ]; do
       MEGS=$(awk '/MemAvailable/{printf "%d\n", $2 * 1.1 / 1024;}' < /proc/meminfo)
       stressmem $MEGS
-      if [ $MEM_TOTAL_0 == $(getmem) ]; then
-        echo "Memory do not increases"
-        return 1
-      fi
+      ((counter++))
     done
 
 - sh: sleep 8
