@@ -20,8 +20,8 @@ init:
       echo stress $MEGS megabytes
       stress --vm-bytes ${MEGS}M --timeout 5s -m 1
     }
-    OLD_SWAPPINESS=$(sysctl vm.swappiness|tr -d " " )
-    sysctl -w vm.swappiness=10
+    OLD_SWAPPINESS=$(sudo sysctl vm.swappiness|tr -d " " )
+    sudo sysctl -w vm.swappiness=10
     MEM_TOTAL_0=$( getmem )
     local stress_counter=1
     while [ $(getmem) -le 2000 ] && [ $stress_counter -le 5 ]; do
@@ -30,7 +30,7 @@ init:
       stressmem $MEGS
       ((stress_counter++))
     done
-    sysctl -w $OLD_SWAPPINESS
+    sudo sysctl -w $OLD_SWAPPINESS
 - sh: sleep 8
 - free
 
