@@ -37,6 +37,8 @@ init:
 test_script:
 - sh: systemctl status mssql-server.service || true
 - sh: grep "$(date '+%b %d')" /var/log/syslog > syslog.log
+- sh: sudo netstat -anp|grep ':1433'
+- sh: sudo netstat -anp|grep ':1434'
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 
