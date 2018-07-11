@@ -36,11 +36,16 @@ init:
 
 test_script:
 - sh: systemctl status mssql-server.service || true
+- sh:
+    echo "Waiting for server to boot up..."
+    attempts=0
+    max_attempts=30
+    while ( nc 127.0.0.1 1433 < /dev/null || nc 127.0.0.1 1434 < /dev/null )  && [[ $attempts < $max_attempts ]] ; do
+        attempts=$((attempts+1))
+        sleep 1;
+        echo "waiting... (${attempts}/${max_attempts})"
+    done
 - sh: grep "$(date '+%b %d')" /var/log/syslog > syslog.log
-- sh: |
-    sudo netstat -anp | grep ':1433'
-- sh: |
-    sudo netstat -anp | grep ':1434'
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 
