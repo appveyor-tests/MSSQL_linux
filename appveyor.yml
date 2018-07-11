@@ -45,6 +45,8 @@ test_script:
         sleep 1;
         echo "waiting... (${attempts}/${max_attempts})"
     done
+    sudo netstat -anp | grep 1433 || true
+    sudo netstat -anp | grep 1434 || true
 - sh: grep "$(date '+%b %d')" /var/log/syslog > syslog.log
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
