@@ -40,7 +40,7 @@ test_script:
     echo "Waiting for server to boot up..."
     attempts=0
     max_attempts=30
-    while ( nc 127.0.0.1 1433 < /dev/null || nc 127.0.0.1 1434 < /dev/null )  && [[ $attempts < $max_attempts ]] ; do
+    while ( ! sudo netstat -tnpl | grep  :1433 >/dev/null || ! sudo netstat -tnpl | grep  :1434 > /dev/null )  && [[ $attempts -le $max_attempts ]] ; do
         attempts=$((attempts+1))
         sleep 1;
         echo "waiting... (${attempts}/${max_attempts})"
