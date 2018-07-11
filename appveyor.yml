@@ -36,7 +36,7 @@ init:
 
 test_script:
 - sh: systemctl status mssql-server.service || true
-- sh:
+- sh: |
     echo "Waiting for server to boot up..."
     attempts=0
     max_attempts=30
