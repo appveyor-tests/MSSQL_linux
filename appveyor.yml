@@ -46,7 +46,7 @@ test_script:
         echo "waiting... (${attempts}/${max_attempts})"
     done
 
-- sh: grep "$(date '+%b %d')" /var/log/syslog > syslog.log
+- sh: grep "$(date '+%b %e')" /var/log/syslog > syslog.log
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 
