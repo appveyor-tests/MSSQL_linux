@@ -6,9 +6,11 @@ services:
 - mssql
 
 init:
+- appveyor UpdateBuild -Message "TEST_SUITE=${TEST_SUITE}, TEST_IMAGE=${TEST_IMAGE}, TEST_CLOUD=${TEST_CLOUD}"
 - appveyor version
 - sh: echo $APPVEYOR_BUILD_WORKER_IMAGE
 - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
+- sh: cat /proc/meminfo
 - sh: sudo apt install stress
 #- sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 - sh: |
@@ -23,7 +25,7 @@ init:
     OLD_SWAPPINESS=$(sudo sysctl vm.swappiness|tr -d " " )
     sudo sysctl -w vm.swappiness=10
     MEM_TOTAL_0=$( getmem )
-    local stress_counter=1
+    stress_counter=1
     while [ $(getmem) -le 2000 ] && [ $stress_counter -le 5 ]; do
       grep Mem /proc/meminfo
       MEGS=$(awk '/MemAvailable/{printf "%d\n", $2 * 1.1 / 1024;}' < /proc/meminfo)
@@ -46,7 +48,8 @@ test_script:
         echo "waiting... (${attempts}/${max_attempts})"
     done
 
-- sh: grep "$(date '+%b %e')" /var/log/syslog > syslog.log
+- sh: sudo grep "$(date '+%b %e')" /var/log/syslog > syslog.log
+- sh: sudo grep "$(date '+%b %e')" /var/opt/mssql/log/errorlog > error.log
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 
@@ -58,3 +61,4 @@ build: off
 
 on_failure:
 - appveyor PushArtifact syslog.log
+- appveyor PushArtifact error.log
