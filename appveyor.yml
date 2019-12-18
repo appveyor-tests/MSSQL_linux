@@ -6,7 +6,7 @@ services:
 - mssql
 
 init:
-- appveyor UpdateBuild -Message "TEST_SUITE=${TEST_SUITE}, TEST_IMAGE=${TEST_IMAGE}, TEST_CLOUD=${TEST_CLOUD}"
+- ps: Update-AppveyorBuild -Message "Image '$env:APPVEYOR_BUILD_WORKER_IMAGE'@'$env:APPVEYOR_BUILD_WORKER_CLOUD' cloud. $env:APPVEYOR_REPO_COMMIT_MESSAGE"
 - appveyor version
 - sh: echo $APPVEYOR_BUILD_WORKER_IMAGE
 - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
