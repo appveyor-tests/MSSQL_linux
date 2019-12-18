@@ -10,7 +10,7 @@ init:
 - appveyor version
 - sh: echo $APPVEYOR_BUILD_WORKER_IMAGE
 - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
-- sh: cat /proc/meminfo
+- sh: awk '/MemTotal/{printf "%s %d MB", $1, $2 / 1024;}' < /proc/meminfo; 
 - sh: sudo apt install stress
 #- sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 - sh: |
@@ -49,15 +49,11 @@ test_script:
     done
 
 - sh: sudo grep "$(date '+%b %e')" /var/log/syslog > syslog.log
-- sh: sudo grep "$(date '+%b %e')" /var/opt/mssql/log/errorlog > error.log
+- sh: sudo grep "$(date '+%Y-%m-%d')" /var/opt/mssql/log/errorlog > error.log
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 
 build: off
-
-#artifacts:
-#  - path: syslog.log
-#    name: syslog
 
 on_failure:
 - appveyor PushArtifact syslog.log
