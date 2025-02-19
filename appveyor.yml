@@ -33,7 +33,7 @@ init:
       ((stress_counter++))
     done
     sudo sysctl -w $OLD_SWAPPINESS
-- sh: sleep 8
+- sh: sleep 20
 - free
 
 test_script:
@@ -52,11 +52,12 @@ test_script:
 - sh: sudo grep "$(date '+%b %e')" /var/log/syslog > syslog.log
 - sh: sudo grep "$(date '+%Y-%m-%d')" /var/opt/mssql/log/errorlog > error.log
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
-- sh: sudo lsof -i -P -n
+
 
 
 build: off
 
 on_failure:
+- sh: sudo lsof -i -P -n
 - appveyor PushArtifact syslog.log
 - appveyor PushArtifact error.log
