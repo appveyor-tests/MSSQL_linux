@@ -41,7 +41,7 @@ test_script:
 - sh: |
     echo "Waiting for server to boot up..."
     attempts=0
-    max_attempts=30
+    max_attempts=50
     sudo lsof -i -P -n
     while ( ! sudo lsof -i -P -n | grep  :1433 >/dev/null || ! sudo lsof -i -P -n | grep  :1434 > /dev/null )  && [[ $attempts -le $max_attempts ]] ; do
         attempts=$((attempts+1))
@@ -52,6 +52,7 @@ test_script:
 - sh: sudo grep "$(date '+%b %e')" /var/log/syslog > syslog.log
 - sh: sudo grep "$(date '+%Y-%m-%d')" /var/opt/mssql/log/errorlog > error.log
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
+- sh: sudo lsof -i -P -n
 
 
 build: off
