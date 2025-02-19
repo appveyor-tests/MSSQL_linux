@@ -33,7 +33,7 @@ init:
       ((stress_counter++))
     done
     sudo sysctl -w $OLD_SWAPPINESS
-- sh: sleep 20
+- sh: sleep 60
 - free
 
 test_script:
@@ -42,7 +42,7 @@ test_script:
     echo "Waiting for server to boot up..."
     attempts=0
     max_attempts=50
-    sudo lsof -i -P -n
+    lsof -i -P -n
     while ( ! sudo lsof -i -P -n | grep  :1433 >/dev/null || ! sudo lsof -i -P -n | grep  :1434 > /dev/null )  && [[ $attempts -le $max_attempts ]] ; do
         attempts=$((attempts+1))
         sleep 1;
