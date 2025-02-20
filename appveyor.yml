@@ -40,6 +40,7 @@ init:
 test_script:
 - sh: systemctl status mssql-server.service || true
 - sh: sudo ifconfig eth0
+- sh: sudo -u mssql /opt/mssql/bin/sqlservr -f
 - sh: |
     echo "Waiting for server to boot up..."
     attempts=0
@@ -53,7 +54,7 @@ test_script:
 
 - sh: sudo grep "$(date '+%b %e')" /var/log/syslog > syslog.log
 - sh: sudo grep "$(date '+%Y-%m-%d')" /var/opt/mssql/log/errorlog > error.log
-- sh: sqlcmd -S 127.0.0.1 -U SA -P 'Password12!' -Q 'select @@VERSION'
+- sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 
 
