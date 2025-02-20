@@ -8,7 +8,7 @@ environment:
 init:
 - ps: Update-AppveyorBuild -Message "Image '$env:APPVEYOR_BUILD_WORKER_IMAGE'@'$env:APPVEYOR_BUILD_WORKER_CLOUD' cloud. $env:APPVEYOR_REPO_COMMIT_MESSAGE"
 - appveyor version
-- sh: sqlcmd -S localhost -U sa -P 'Password12!'
+
 - sh: echo $APPVEYOR_BUILD_WORKER_IMAGE
 - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
 - sh: awk '/MemTotal/{printf "%s %d MB", $1, $2 / 1024;}' < /proc/meminfo; 
@@ -39,6 +39,7 @@ init:
 
 test_script:
 - sh: systemctl status mssql-server.service || true
+- sh: sqlcmd -S localhost -U sa -P 'Password12!'
 - sh: |
     echo "Waiting for server to boot up..."
     attempts=0
