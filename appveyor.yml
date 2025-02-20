@@ -39,7 +39,7 @@ init:
 
 test_script:
 - sh: systemctl status mssql-server.service || true
-- sh: sudo ifconfig eth0 | grep 'inet addr'
+- sh: sudo ifconfig eth0
 - sh: |
     echo "Waiting for server to boot up..."
     attempts=0
