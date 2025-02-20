@@ -34,12 +34,13 @@ init:
       ((stress_counter++))
     done
     sudo sysctl -w $OLD_SWAPPINESS
-- sh: sleep 60
+- sh: sleep 5
 - free
 
 test_script:
 - sh: systemctl status mssql-server.service || true
-- sh: sudo ifconfig eth0
+- sh: sudo systemctl stop mssql-server
+- sh: sleep 10
 - sh: sudo -u mssql /opt/mssql/bin/sqlservr -f
 - sh: |
     echo "Waiting for server to boot up..."
