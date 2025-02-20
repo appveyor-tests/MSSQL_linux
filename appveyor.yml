@@ -39,7 +39,7 @@ init:
 
 test_script:
 - sh: systemctl status mssql-server.service || true
-- sh: sqlcmd -S localhost -U sa -P 'Password12!'
+- sh: sudo ifconfig eth0 | grep 'inet addr'
 - sh: |
     echo "Waiting for server to boot up..."
     attempts=0
