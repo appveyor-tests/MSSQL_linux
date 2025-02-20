@@ -41,7 +41,7 @@ test_script:
 - sh: |
     echo "Waiting for server to boot up..."
     attempts=0
-    max_attempts=50
+    max_attempts=30
     lsof -i -P -n
     while ( ! sudo lsof -i -P -n | grep  :1433 >/dev/null || ! sudo lsof -i -P -n | grep  :1434 > /dev/null )  && [[ $attempts -le $max_attempts ]] ; do
         attempts=$((attempts+1))
