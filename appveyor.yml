@@ -48,15 +48,17 @@ test_script:
     echo "Waiting for server to boot up..."
     attempts=0
     max_attempts=30
-    while ! sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select 1' >/dev/null 2>&1 && [[ $attempts -le $max_attempts ]]; do
+    while ! /opt/mssql-tools18/bin/sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select 1' >/dev/null 2>&1 && [[ $attempts -lt $max_attempts ]]; do
         attempts=$((attempts+1))
         sleep 1
         echo "waiting... (${attempts}/${max_attempts})"
     done
+    /opt/mssql-tools18/bin/sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 
-- sh: sudo grep "$(date '+%b %e')" /var/log/syslog > syslog.log
-- sh: sudo grep "$(date '+%Y-%m-%d')" /var/opt/mssql/log/errorlog > error.log
+
+- sh: sudo journalctl -u mssql-server --no-pager > mssql-journal.log || true
+- sh: sudo cat /var/opt/mssql/log/errorlog > error.log || true
 - sh: sqlcmd -S localhost -U SA -P 'Password12!' -Q 'select @@VERSION'
 
 
@@ -66,5 +68,5 @@ on_finish:
 - sh: sudo lsof -i -P -n
 on_failure:
 
-- appveyor PushArtifact syslog.log
+- appveyor PushArtifact mssql-journal.log
 - appveyor PushArtifact error.log
